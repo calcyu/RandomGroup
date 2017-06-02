@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>随机分组</title>
+    <style>
+        .randombox {
+            width: 100px;
+            height: 22px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid red;
+        }
+
+        .randombox span {
+            float: left;
+            width: 100px;
+            height: 22px;
+            text-align: center;
+        }
+
+        .personBox {
+            width: 200px;
+            position: absolute;
+        }
+
+        .tb {
+            width: 500px;
+        }
+
+        .tb td {
+            height: 30px;
+            width: 100px;
+        }
+
+        .tb td:first-child {
+            color: red;
+        }
+    </style>
+    <script src="js/jquery-3.2.1.js"></script>
+    <script type="text/javascript">
+        var gLeader = ["叶妮", "谢世勋", "唐桐宋",
+            "胡新发", "林秀慧", "颜旺", "陈子阳",
+            "邓志文", "饶文斌", "黄伟强"];
+        var gMember = ["潘彪", "杨亚明", "竹科杰", "张特",
+            "施笑", "刘焱林", "刘祥腾", "郭英武", "吴俊文",
+            "刘杰", "赖月聪", "熊磊", "赖煌明", "游小龙", "陈莉萍", "卢渊", "刘鸿远",
+            "徐杨波", "洪聪聪", "梁强强", "曾可", "邹秀萍", "廖琪"];
+        var selMember = [];
+        var isRunning = true;
+        function deleteArr(text) {
+            for (var i = 0; i < gLeader.length; i++) {
+                if (gLeader[i] == text) {
+                    gLeader.splice(i, 1);
+                    return;
+                }
+            }
+            for (var i = 0; i < gMember.length; i++) {
+                if (gMember[i] == text) {
+                    gMember.splice(i, 1);
+                    break;
+                }
+            }
+        }
+        $(function () {
+
+            function bb() {
+                if (isRunning) {
+                    var aa = $(".randombox span:last").text();
+                    $(".personBox").remove();
+                    var arr;
+                    if (selMember.length > 18) {
+                        //每组5个人
+                        if ((selMember.length - 18) % 5 == 0) {
+                            //如果是组长从组长中随机
+                            arr = gLeader.slice();
+                        } else {
+                            // 如果是前三组，随机所有人
+                            //当非组长人员不够5人的时候，合并组长和组员
+                            if (gMember.length < 5) {
+                                arr = gLeader.concat(gMember);
+                            } else {
+                                //否则随机组员
+                                arr = gMember.slice();
+                            }
+                        }
+                    } else {
+                        //每组6个人
+                        if (selMember.length % 6 == 0) {
+                            //如果是组长从组长中随机
+                            arr = gLeader.slice();
+                        } else {
+                            // 如果是前三组，随机所有人
+                            if (gLeader.length > 5) {
+                                arr = gLeader.concat(gMember);
+                            } else {
+                                arr = gMember.slice();
+                            }
+                        }
+                    }
+
+                    if (!aa) {
+                        aa = arr.splice(Math.floor(Math.random() * arr.length), 1);
+                    }
+                    var bb = arr.splice(Math.floor(Math.random() * arr.length), 1);
+                    $(".randombox").append("<div class='personBox'><span>" + aa + "</span><span>" + bb + "</span></div>");
+                    $(".personBox:last").animate({
+                        left: "-100px"
+                    }, 100);
+                }
+            }
+
+            setInterval(bb, 100);
+            $("button").click(function () {
+                isRunning = !isRunning;
+                if (isRunning) {
+                    $(this).text("暂停");
+                } else {
+                    var sel = $("span:last").text();
+                    $("td").eq(selMember.length).append(sel);
+                    deleteArr(sel);
+                    selMember.push(sel);
+                    $(this).text("开始");
+                }
+            })
+        });
+
+    </script>
+</head>
+<body>
+<div class="randombox">
+</div>
+<button>暂停</button>
+<table border="1" class="tb">
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+</body>
+</html>
