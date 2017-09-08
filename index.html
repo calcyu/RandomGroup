@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>随机分组</title>
@@ -11,43 +12,41 @@
             position: relative;
             border: 1px solid red;
         }
-
+        
         .randombox span {
             float: left;
             width: 100px;
             height: 22px;
             text-align: center;
         }
-
+        
         .personBox {
             width: 200px;
             position: absolute;
         }
-
+        
         .tb {
             width: 500px;
         }
-
+        
         .tb td {
             height: 30px;
             width: 100px;
         }
-
+        
         .tb td:first-child {
             color: red;
         }
     </style>
     <script src="js/jquery-3.2.1.js"></script>
     <script type="text/javascript">
-        var gLeader = ["叶妮", "谢世勋", "唐桐宋",
-            "胡新发", "林秀慧", "颜旺", "陈子阳",
-            "邓志文", "饶文斌", "黄伟强"];
-        var gMember = ["潘彪", "杨亚明", "竹科杰", "张特",
-            "施笑", "刘焱林", "刘祥腾", "郭英武", "吴俊文",
-            "刘杰", "赖月聪", "熊磊", "赖煌明", "游小龙", "陈莉萍", "卢渊", "刘鸿远",
-            "徐杨波", "洪聪聪", "梁强强", "曾可", "邹秀萍", "廖琪"];
+        var gLeader = ["熊艳", "吴仔妹", "赵琪", "周美芳", "冯映清"];
+        var gMember = ["廖琪", "黄高峰", "方侯侠",
+            "吴磊", "刘杨", "吴敏", "吴利河", "沈意波", "罗盼盼", "马玉田", "汤天赐", "郭芳丽"
+        ];
         var selMember = [];
         var isRunning = true;
+
         function deleteArr(text) {
             for (var i = 0; i < gLeader.length; i++) {
                 if (gLeader[i] == text) {
@@ -62,40 +61,64 @@
                 }
             }
         }
-        $(function () {
+        $(function() {
+
+            function createArr(total, sep) {
+                var arr = [];
+                while (total > sep) {
+                    arr.push(sep);
+                    total = total - sep;
+                }
+                arr.push(total);
+                return arr;
+            }
+
+            function initView() {
+                var len = gLeader.length + gMember.length;
+                //14 15 16 17 18
+                var arr;
+                arr = createArr(len, 5);
+                var after = arr[arr.length - 1];
+                if (after < 5) {
+                    if (after > arr.length - 1) {
+                        //剩余数大于分组数
+                        var i = 0;
+                        while (after > 0) {
+                            var index = i % (arr.length - 1);
+                            arr[index] = arr[index] + 1;
+                            after--;
+                            i++;
+                        }
+                    } else {
+                        for (var i = 0; i < after; i++) {
+                            arr[i] = arr[i] + 1;
+                        }
+                    }
+                    arr.pop();
+                }
+                var element = [];
+                for (var k = 0; k < arr.length; k++) {
+                    element.push("<tr>");
+                    for (var j = 0; j < arr[k]; j++) {
+                        element.push("<td></td>");
+                    }
+                    element.push("</tr>");
+                }
+                $("#myTb").append(element.join(""));
+            }
+            initView();
 
             function bb() {
                 if (isRunning) {
                     var aa = $(".randombox span:last").text();
                     $(".personBox").remove();
                     var arr;
-                    if (selMember.length > 18) {
-                        //每组5个人
-                        if ((selMember.length - 18) % 5 == 0) {
-                            //如果是组长从组长中随机
-                            arr = gLeader.slice();
-                        } else {
-                            // 如果是前三组，随机所有人
-                            //当非组长人员不够5人的时候，合并组长和组员
-                            if (gMember.length < 5) {
-                                arr = gLeader.concat(gMember);
-                            } else {
-                                //否则随机组员
-                                arr = gMember.slice();
-                            }
-                        }
+                    if ($("td").eq(selMember.length).is("tr td:first-child")) {
+                        arr = gLeader.slice();
                     } else {
-                        //每组6个人
-                        if (selMember.length % 6 == 0) {
-                            //如果是组长从组长中随机
+                        arr = gMember.slice();
+                        if (arr.length == 0) {
                             arr = gLeader.slice();
-                        } else {
-                            // 如果是前三组，随机所有人
-                            if (gLeader.length > 5) {
-                                arr = gLeader.concat(gMember);
-                            } else {
-                                arr = gMember.slice();
-                            }
                         }
                     }
 
@@ -111,7 +134,7 @@
             }
 
             setInterval(bb, 100);
-            $("button").click(function () {
+            $("button").click(function() {
                 isRunning = !isRunning;
                 if (isRunning) {
                     $(this).text("暂停");
@@ -124,59 +147,15 @@
                 }
             })
         });
-
     </script>
 </head>
+
 <body>
-<div class="randombox">
-</div>
-<button>暂停</button>
-<table border="1" class="tb">
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-</table>
+    <div class="randombox">
+    </div>
+    <button>暂停</button>
+    <table id="myTb" border="1" class="tb">
+    </table>
 </body>
+
 </html>
