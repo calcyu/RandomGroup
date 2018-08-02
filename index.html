@@ -3,159 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>随机分组</title>
-    <style>
-        .randombox {
-            width: 100px;
-            height: 22px;
-            overflow: hidden;
-            position: relative;
-            border: 1px solid red;
-        }
-        
-        .randombox span {
-            float: left;
-            width: 100px;
-            height: 22px;
-            text-align: center;
-        }
-        
-        .personBox {
-            width: 200px;
-            position: absolute;
-        }
-        
-        .tb {
-            width: 500px;
-        }
-        
-        .tb td {
-            height: 30px;
-            width: 100px;
-        }
-        
-        .tb td:first-child {
-            color: red;
-        }
-    </style>
+    <title>思诚随机分组</title>
+    <link rel="stylesheet" href="main.css">
     <script src="js/jquery-3.2.1.js"></script>
-    <script type="text/javascript">
-        var gLeader = ["熊艳", "吴仔妹", "赵琪", "周美芳", "冯映清"];
-        var gMember = ["廖琪", "黄高峰", "方侯侠",
-            "吴磊", "刘杨", "吴敏", "吴利河", "沈意波", "罗盼盼", "马玉田", "汤天赐", "郭芳丽"
-        ];
-        var selMember = [];
-        var isRunning = true;
-
-        function deleteArr(text) {
-            for (var i = 0; i < gLeader.length; i++) {
-                if (gLeader[i] == text) {
-                    gLeader.splice(i, 1);
-                    return;
-                }
-            }
-            for (var i = 0; i < gMember.length; i++) {
-                if (gMember[i] == text) {
-                    gMember.splice(i, 1);
-                    break;
-                }
-            }
-        }
-        $(function() {
-
-            function createArr(total, sep) {
-                var arr = [];
-                while (total > sep) {
-                    arr.push(sep);
-                    total = total - sep;
-                }
-                arr.push(total);
-                return arr;
-            }
-
-            function initView() {
-                var len = gLeader.length + gMember.length;
-                //14 15 16 17 18
-                var arr;
-                arr = createArr(len, 5);
-                var after = arr[arr.length - 1];
-                if (after < 5) {
-                    if (after > arr.length - 1) {
-                        //剩余数大于分组数
-                        var i = 0;
-                        while (after > 0) {
-                            var index = i % (arr.length - 1);
-                            arr[index] = arr[index] + 1;
-                            after--;
-                            i++;
-                        }
-                    } else {
-                        for (var i = 0; i < after; i++) {
-                            arr[i] = arr[i] + 1;
-                        }
-                    }
-                    arr.pop();
-                }
-                var element = [];
-                for (var k = 0; k < arr.length; k++) {
-                    element.push("<tr>");
-                    for (var j = 0; j < arr[k]; j++) {
-                        element.push("<td></td>");
-                    }
-                    element.push("</tr>");
-                }
-                $("#myTb").append(element.join(""));
-            }
-            initView();
-
-            function bb() {
-                if (isRunning) {
-                    var aa = $(".randombox span:last").text();
-                    $(".personBox").remove();
-                    var arr;
-                    if ($("td").eq(selMember.length).is("tr td:first-child")) {
-                        arr = gLeader.slice();
-                    } else {
-                        arr = gMember.slice();
-                        if (arr.length == 0) {
-                            arr = gLeader.slice();
-                        }
-                    }
-
-                    if (!aa) {
-                        aa = arr.splice(Math.floor(Math.random() * arr.length), 1);
-                    }
-                    var bb = arr.splice(Math.floor(Math.random() * arr.length), 1);
-                    $(".randombox").append("<div class='personBox'><span>" + aa + "</span><span>" + bb + "</span></div>");
-                    $(".personBox:last").animate({
-                        left: "-100px"
-                    }, 100);
-                }
-            }
-
-            setInterval(bb, 100);
-            $("button").click(function() {
-                isRunning = !isRunning;
-                if (isRunning) {
-                    $(this).text("暂停");
-                } else {
-                    var sel = $("span:last").text();
-                    $("td").eq(selMember.length).append(sel);
-                    deleteArr(sel);
-                    selMember.push(sel);
-                    $(this).text("开始");
-                }
-            })
-        });
+    <script src="js/randomAllocation.js"></script>
+    <script>
+        $(function () {
+            $("#root").randomAllocation();
+        })
     </script>
 </head>
 
 <body>
-    <div class="randombox">
-    </div>
-    <button>暂停</button>
-    <table id="myTb" border="1" class="tb">
-    </table>
+    <div id="root"></div>
 </body>
 
 </html>
