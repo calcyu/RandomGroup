@@ -1,0 +1,33 @@
+.random-box {
+    width: 100px;
+    height: 22px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid red;
+}
+
+.random-box span {
+    float: left;
+    width: 100px;
+    height: 22px;
+    text-align: center;
+}
+
+.person-box {
+    width: 200px;
+    position: absolute;
+}
+
+.tb {
+    width: 500px;
+}
+
+.tb td {
+    height: 30px;
+    width: 100px;
+    text-align: center;
+}
+
+.tb .leader {
+    color: red;
+}
