@@ -3,13 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>思诚随机分组</title>
+    <title>项目开发随机分组小程序</title>
     <link rel="stylesheet" href="main.css">
     <script src="js/jquery-3.2.1.js"></script>
     <script src="js/randomAllocation.js"></script>
+    <script src="names.js"></script>
     <script>
         $(function () {
-            $("#root").randomAllocation();
+            $("#root").randomAllocation({
+                persons: persons,
+                // url:'names.json',
+                // groupCount: 5, //小组数
+                // groupSize: 6, //每组最大人数
+            });
         })
     </script>
 </head>
