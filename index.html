@@ -6,9 +6,36 @@
     <title>项目开发随机分组小程序</title>
     <link rel="stylesheet" href="main.css">
     <script src="js/jquery-3.2.1.js"></script>
+<<<<<<< HEAD
     <script src="js/randomAllocation.js"></script>
     <script src="names.js"></script>
     <script>
+=======
+    <script type="text/javascript">
+        var gLeader = ["罗友", "黄山", "路老师",
+            "熊有进", "林秀慧", "颜旺", "陈子阳",
+            "邓志文", "饶文斌", "黄伟强","项德华"];
+        var gMember = ["潘彪", "杨亚明", "竹科杰", "张特",
+            "施笑", "刘焱林", "刘祥腾", "郭英武", "吴俊文",
+            "刘杰", "赖月聪", "熊磊", "赖煌明", "游小龙", "陈莉萍", "卢渊", "刘鸿远",
+            "徐杨波", "洪聪聪", "梁强强", "曾可", "邹秀萍", "廖琪"];
+        var selMember = [];
+        var isRunning = true;
+        function deleteArr(text) {
+            for (var i = 0; i < gLeader.length; i++) {
+                if (gLeader[i] == text) {
+                    gLeader.splice(i, 1);
+                    return;
+                }
+            }
+            for (var i = 0; i < gMember.length; i++) {
+                if (gMember[i] == text) {
+                    gMember.splice(i, 1);
+                    break;
+                }
+            }
+        }
+>>>>>>> 93cb86334d6729df40b6723d341bb6d74cc68f1a
         $(function () {
             $("#root").randomAllocation({
                 persons: persons,
