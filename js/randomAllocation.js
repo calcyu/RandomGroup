@@ -1,3 +1,11 @@
+/*!
+ * 项目随机分组小程序 v1.0.1
+ * http://geek5.cn
+ *
+ * Author: 求愚/calcyu
+ *
+ * Date: 2020-09-13
+ */
 ;(function ($, window, document, undefined) {
     //mvc思想
     $.fn.randomAllocation = function (options) {
@@ -7,20 +15,32 @@
             this.__proto__ = {
                 init: function () {
                     var _this = this;
-                    $.getJSON(settings.url, function (d) {
-                        _this.leader = d.leader;
-                        _this.member = d.member;
-                        _this.total = d.leader.length + d.member.length;
+                    function setProp(p){
+                        _this.leader = p.leader;
+                        _this.member = p.member;
+                        _this.total = p.leader.length + p.member.length;
                         settings.total = _this.total;
+                        //优先设置的groupCount 和groupSize
+                        settings.groupCount = settings.groupCount||_this.leader.length;
+                        settings.groupSize = settings.groupSize||Math.ceil(settings.total/settings.groupCount);
                         if (_this.total < settings.groupSize) {
                             alert("不要闹！人数太少不够分");
                         } else {
-                            callback();
+                            callback(_this);
                         }
-                    })
+                    }
+                    if(settings.persons){
+                        setProp(settings.persons);
+                    }else if(settings.url){
+                        $.getJSON(settings.url, function (d) {
+                            setProp(d);
+                        })
+                    }else{
+                        alert('请通过persons或url指定分组名单');
+                    }
                 },
                 randomName: function () {
-                    if (Math.random() * 2 - 1 > 0) {
+                    if (Math.random() * 2 - 1 > 0 && this.leader.length>0) {
                         return this.leader[Math.floor(Math.random() * this.leader.length)];
                     } else {
                         return this.member[Math.floor(Math.random() * this.member.length)];
@@ -45,6 +65,7 @@
             this.__proto__ = {}
 
             function initView() {
+                console.log(settings)
                 this.box = $("<div class='random-box'></div>");
                 this.btn = $("<button id='btn'>暂停</button>");
                 this.tb = $("<table  border='1' class='tb'></table>")
@@ -53,8 +74,9 @@
                 root.append(this.tb);
                 //分组思路：总数/5，剩余人数分摊到每一组
                 //要求每组至少5人
-                var col = Math.floor(settings.total / settings.groupSize);
-                settings.groupCount = col;
+                // var col = Math.floor(settings.total / settings.groupSize);
+                // settings.groupCount = col;
+                col = settings.groupCount;
                 var element = [];
                 //标题
                 element.push("<tr>");
@@ -75,16 +97,16 @@
                     element.push("</tr>");
                 }
                 //处理剩余人数
-                var remainder = settings.total % settings.groupSize;
-                while (remainder > 0) {
-                    element.push("<tr>");
-                    var c = remainder < col ? remainder : col;
-                    for (var j = 0; j < c; j++) {
-                        element.push("<td></td>");
-                    }
-                    element.push("</tr>");
-                    remainder -= c;
-                }
+                // var remainder = settings.total % settings.groupSize;
+                // while (remainder > 0) {
+                //     element.push("<tr>");
+                //     var c = remainder < col ? remainder : col;
+                //     for (var j = 0; j < c; j++) {
+                //         element.push("<td></td>");
+                //     }
+                //     element.push("</tr>");
+                //     remainder -= c;
+                // }
                 this.tb.append(element.join(""));
             }
 
@@ -139,22 +161,34 @@
             }
         }
         //初始参数
-        var settings = $.extend({
-            url: "names.json",
+        var settings = $.extend({},{
             isSelecting: true,
-            groupSize: 5,
             rollSpeed: 100,
             selectedCount: 0,
-            groupCount: 0
         }, options);
 
+        if(options.groupCount){
+            settings.groupCount = options.groupCount;
+        }
+
+        if(options.groupSize){
+            settings.groupSize = options.groupSize;
+        }
+
+        if(options.rollSpeed){
+            settings.rollSpeed = options.rollSpeed;
+        }
+
+        if(options.persons){
+            settings.persons = options.persons;
+        }
+
         //初始化名单
-        var data = new DataHelper(settings, function () {
+        new DataHelper(settings, function (data) {
             //初始化VIEW
-            var view = new ViewHelper(_root, settings);
+            new ViewHelper(_root, settings);
             //开始随机分配
-            var random = new RandomHelper(data, settings);
-            random.start()
+            new RandomHelper(data, settings).start();
         });
 
     };
