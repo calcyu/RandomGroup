@@ -2,10 +2,16 @@
 # This file should be at the root of your project
 language: node_js
 node_js:
- - 7
+ - 10
 script:
   - node text2json.js
 branches:
   only:
     # Change this to gh-pages if you're deploying using the gh-pages branch
     - gh-pages
+after_success:
+    - git config --global user.name "${U_NAME}"
+    - git config --global user.email "${U_EMAIL}"
+    - git add -A
+    - git commit -m 'deploy'
+    - git push --quiet --force "https://${GH_TOKEN}@${GH_REF}" master:${P_BRANCH}
