@@ -1,0 +1,19 @@
+{
+  "name": "randomgroup",
+  "version": "1.0.0",
+  "description": "一个使用MVC编程思想，并基于jQuery封装的一个随机分组的小程序",
+  "main": "names.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/calcyu/RandomGroup.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/calcyu/RandomGroup/issues"
+  },
+  "homepage": "https://github.com/calcyu/RandomGroup#readme"
+}

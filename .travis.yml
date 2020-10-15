@@ -1,0 +1,11 @@
+# .travis.yml
+# This file should be at the root of your project
+language: node_js
+node_js:
+ - 7
+script:
+  - node text2json.js
+branches:
+  only:
+    # Change this to gh-pages if you're deploying using the gh-pages branch
+    - gh-pages
