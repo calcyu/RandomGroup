@@ -12,6 +12,7 @@ branches:
 after_success:
     - git config --global user.name "${U_NAME}"
     - git config --global user.email "${U_EMAIL}"
+    - git config -l
     - git add -A
     - git commit -m 'deploy'
     - git push --quiet --force "https://${GH_TOKEN}@${GH_REF}" gh-pages:${P_BRANCH}
